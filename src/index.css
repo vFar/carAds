@@ -1,68 +1,45 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
+/* src/index.css */
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  background-color: #ade8f4;
+  color: #03045e;
+  font-family: "Inter", sans-serif;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.ant-layout-header {
+  background-color: 90E0EF!important;
+  color: white !important;
+  font-size: 20px;
+  font-weight: 600;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.ant-card {
+  background-color: #ffffff;
+  border: 1px solid #90e0ef;
+  border-radius: 12px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.ant-btn-primary {
+  background-color: #90E0EF!important;
+  border-color: #90E0EF!important;
 }
+
+.ant-btn-primary:hover {
+  background-color: #ADE8F4 !important;
+  border-color: #ADE8F4 !important;
+}
+
+/* ✅ Customize AntD Checkbox color */
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #90E0EF !important; /* fill color when checked */
+  border-color: #90E0EF !important;
+}
+
+.ant-checkbox:hover .ant-checkbox-inner {
+  border-color: #90E0EF !important; /* border when hovered */
+}
+
+.ant-checkbox-inner {
+  border-radius: 4px; /* optional — round corners a bit */
+  border-color: #90E0EF !important;
+}
+

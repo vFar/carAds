@@ -1,0 +1,29 @@
+/* Sidebar background */
+.custom-sidebar {
+  background-color: #48CAE4 !important;
+}
+
+/* Menu item default text and icon color */
+.custom-menu .ant-menu-item, 
+.custom-menu .ant-menu-item span,
+.custom-menu .ant-menu-item .anticon {
+  color: #03045E !important;
+}
+
+/* Menu item hover */
+.custom-menu .ant-menu-item:hover {
+  background-color: #00B4D8 !important;
+  color: #03045E !important;
+}
+
+/* Menu item selected */
+.custom-menu .ant-menu-item-selected {
+  background-color: #00B4D8 !important;
+  color: #03045E !important;
+}
+
+/* Menu icons hover/selected */
+.custom-menu .ant-menu-item:hover .anticon,
+.custom-menu .ant-menu-item-selected .anticon {
+  color: #03045E !important;
+}

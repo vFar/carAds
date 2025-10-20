@@ -11,3 +11,13 @@
 - Object
 
 {"Federal blue":"03045e","Marian blue":"023e8a","Honolulu Blue":"0077b6","Blue Green":"0096c7","Pacific cyan":"00b4d8","Vivid sky blue":"48cae4","Non Photo blue":"90e0ef","Non Photo blue 2":"ade8f4","Light cyan":"caf0f8"}
+
+
+#03045E (text, navbar)
+#0077B6 (main buttons)
+#00B4D8 (hover, icons)
+#90E0EF (backgrounds)
+#CAF0F8 (page background)
+
+
+https://coolors.co/palette/03045e-023e8a-0077b6-0096c7-00b4d8-48cae4-90e0ef-ade8f4-caf0f8
