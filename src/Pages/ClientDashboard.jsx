@@ -1,17 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Layout, Typography, Button, Card, Row, Col, message } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import SidebarMenu from "../Components/SidebarMenu";
+import { db } from "../firebase"; // 🔥 Import Firestore
+import { doc, getDoc } from "firebase/firestore"; // 🔥 Firestore utils
 
 const { Header, Content, Footer } = Layout;
 const { Title, Paragraph } = Typography;
 
 const ClientDashboard = ({ user, onLogout }) => {
   const navigate = useNavigate();
+  const [displayName, setDisplayName] = useState("User");
+
+  useEffect(() => {
+    // Fetch user's name from Firestore
+    const fetchUserData = async () => {
+      try {
+        if (user?.uid) {
+          const userRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userRef);
+          if (userSnap.exists()) {
+            setDisplayName(userSnap.data().name || "User");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
 
   const handleLogout = () => {
-    localStorage.removeItem("sessionUser");
     onLogout();
     message.success("Logged out successfully");
     navigate("/login");
@@ -37,13 +58,12 @@ const ClientDashboard = ({ user, onLogout }) => {
           }}
         >
           <Title level={4} style={{ margin: 0 }}>
-            Welcome, {user}
+            Welcome, {displayName}
           </Title>
         </Header>
 
         {/* Dashboard Content */}
         <Content style={{ height: "calc(100vh - 64px - 70px)" }}>
-          {/* 64px = default Header height, 70px ~ Footer height */}
           <div
             style={{
               padding: 24,
@@ -55,7 +75,8 @@ const ClientDashboard = ({ user, onLogout }) => {
           >
             <Title level={3}>Your Dashboard</Title>
             <Paragraph>
-              Manage your car advertisements, post new ads, and track performance.
+              Manage your car advertisements, post new ads, and track
+              performance.
             </Paragraph>
 
             <Row gutter={[24, 24]}>
@@ -108,7 +129,7 @@ const ClientDashboard = ({ user, onLogout }) => {
 
         {/* Footer */}
         <Footer style={{ textAlign: "center", flexShrink: 0 }}>
-          © {new Date().getFullYear()} Car Advertisements — Drive Your Dreama
+          © {new Date().getFullYear()} Car Advertisements — Drive Your Dream
         </Footer>
       </Layout>
     </Layout>

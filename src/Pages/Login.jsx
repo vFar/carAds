@@ -1,48 +1,71 @@
 import React, { useEffect } from "react";
-import { Form, Input, Button, Typography, Card, message, Checkbox } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Typography,
+  Card,
+  message,
+  Checkbox,
+  Image,
+} from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
 import icon from "/icon.png";
 import wave from "../assets/waves.svg";
-import { Image } from "antd";
 
-const { Title } = Typography;
+const { Text } = Typography;
 
-const users = {
-  admin: "admin",
-  client: "client",
-};
-
-const Login = ({ onLoginSuccess }) => {
+const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("sessionUser");
-    if (savedUser) {
-      message.success(`Welcome back, ${savedUser}!`);
-      onLoginSuccess(savedUser);
-      navigate("/dashboard");
-    }
-  }, [navigate, onLoginSuccess]);
+    // Check if user is already logged in
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // optional: get user name from Firestore
+        const snap = await getDoc(doc(db, "users", user.uid));
+        const name = snap.exists() ? snap.data().name : user.email;
 
-  const onFinish = (values) => {
+        message.success(`Welcome back, ${name}!`);
+        localStorage.setItem("sessionUser", name);
+        navigate("/dashboard");
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
+
+  const onFinish = async (values) => {
     const { username, password, remember } = values;
 
-    if (users[username] && users[username] === password) {
-      message.success(
-        `Login successful! Remember me: ${remember ? "Yes" : "No"}`
+    try {
+      // Firebase login with email & password
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        username,
+        password
       );
+      const user = userCredential.user;
 
-      if (remember) {
-        localStorage.setItem("sessionUser", username);
-      } else {
-        localStorage.removeItem("sessionUser");
-      }
+      // Get display name from Firestore
+      const snap = await getDoc(doc(db, "users", user.uid));
+      const name = snap.exists() ? snap.data().name : user.email;
 
-      onLoginSuccess(username);
+      message.success(`Welcome, ${name}!`);
+      if (remember) localStorage.setItem("sessionUser", name);
       navigate("/dashboard");
-    } else {
-      message.error("Invalid credentials");
+    } catch (error) {
+      if (error.code === "auth/user-not-found") {
+        message.error("No account found with that email.");
+      } else if (error.code === "auth/wrong-password") {
+        message.error("Incorrect password.");
+      } else {
+        message.error("Login failed. Please try again.");
+      }
+      console.error("Login error:", error);
     }
   };
 
@@ -51,11 +74,11 @@ const Login = ({ onLoginSuccess }) => {
       style={{
         height: "100vh",
         display: "flex",
-        justifyContent: "flex-start", // move card to left
-        alignItems: "center", // keep centered vertically
+        justifyContent: "flex-start",
+        alignItems: "center",
         position: "relative",
         overflow: "hidden",
-        paddingLeft: "10%" // acts like margin-left
+        paddingLeft: "10%",
       }}
     >
       <img
@@ -99,7 +122,6 @@ const Login = ({ onLoginSuccess }) => {
           />
         </div>
 
-        {/* form remains unchanged */}
         <Form
           name="login"
           layout="vertical"
@@ -109,19 +131,17 @@ const Login = ({ onLoginSuccess }) => {
           size="large"
         >
           <Form.Item
-            label="Username"
             name="username"
-            rules={[{ required: true, message: "Please input your username!" }]}
+            rules={[{ required: true, message: "Please input your email!" }]}
           >
-            <Input prefix={<UserOutlined />} />
+            <Input prefix={<UserOutlined />} placeholder="E-mail" />
           </Form.Item>
 
           <Form.Item
-            label="Password"
             name="password"
             rules={[{ required: true, message: "Please input your password!" }]}
           >
-            <Input.Password prefix={<LockOutlined />} />
+            <Input.Password prefix={<LockOutlined />} placeholder="Password" />
           </Form.Item>
 
           <Form.Item name="remember" valuePropName="checked">
@@ -139,6 +159,20 @@ const Login = ({ onLoginSuccess }) => {
             </Button>
           </Form.Item>
         </Form>
+
+        <div style={{ textAlign: "center", marginTop: 8 }}>
+          <Text>
+            New here?{" "}
+            <Typography.Link
+              onClick={() => navigate("/register")}
+              style={{ color: "#90E0EF" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#ADE8F4")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#90E0EF")}
+            >
+              Register
+            </Typography.Link>
+          </Text>
+        </div>
       </Card>
     </div>
   );

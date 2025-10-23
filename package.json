@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
     "antd": "^5.27.4",
+    "antd-phone-input": "^0.3.14",
     "firebase": "^12.4.0",
     "framer-motion": "^12.23.24",
     "react": "^19.1.1",

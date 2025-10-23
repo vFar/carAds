@@ -43,3 +43,11 @@ body {
   border-color: #90E0EF !important;
 }
 
+.custom-phone-input .ant-select-selector {
+  background-color: transparent !important; /* remove gray bg */
+  height: 40px !important; /* match Ant Design Input height */
+  border-radius: 6px;
+}
+.custom-phone-input input {
+  padding-left: 8px; /* optional, to align text nicely */
+}

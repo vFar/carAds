@@ -18,8 +18,8 @@ const SidebarMenu = ({ handleLogout }) => {
 
   // Define color palette
   const colors = {
-    sidebarBg: "#0077B6",       // sidebar background
-    menuText: "#CAF0F8",        // menu text & icon
+    sidebarBg: "#90E0EF",       // sidebar background
+    menuText: "#FFF",        // menu text & icon
     menuHover: "#00B4D8",       // hover & selected
     logoutText: "#ff4d4f",      // logout button color
     divider: "rgba(0,0,0,0.1)", // divider color
@@ -84,7 +84,7 @@ const SidebarMenu = ({ handleLogout }) => {
             {
               key: "3",
               icon: <PlusCircleOutlined style={{ color: colors.menuText }} />,
-              label: "Post a Car Ad",
+              label: "New listing ",
               onClick: () => navigate("/post-ad"),
             },
             {
